@@ -1,0 +1,12 @@
+.canvas-div {
+  display: flex;
+  justify-content: center;
+
+}
+
+#main-canvas {
+  color: black;
+  width: 80%;
+  height: 80%;
+  border: 1px solid black;
+}
