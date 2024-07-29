@@ -1,3 +1,9 @@
+* {
+  padding: 0px;
+  margin: 0px;
+}
+
+body {overflow: hidden;}
 .canvas-div {
   display: flex;
   justify-content: center;
@@ -7,6 +13,36 @@
 #main-canvas {
   color: black;
   width: 80%;
-  height: 80%;
+  height: 100%;
+  margin-top: 2vh;
   border: 1px solid black;
+}
+
+#wave-1,
+#wave-2 {
+  position: absolute;
+  background-color: lightblue;
+  height: 200vh;
+  z-index: 0;
+  width: 50vw;
+}
+
+#wave-1 {
+  left: -42vw;
+  top: 0vh;
+}
+
+#wave-2 {
+  right: -42vw;
+  bottom: 0vh;
+}
+
+.header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  font-size: 10vw;
+  background-color: blue;
+  color:burlywood;
 }
