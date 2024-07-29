@@ -1,39 +1,68 @@
 * {
   padding: 0px;
   margin: 0px;
+  font-family: 'kanit'
 }
 
-body {overflow: hidden;}
-.canvas-div {
+body {
+  overflow: hidden;
+  background-color: ghostwhite;
+}
+
+#welcome-overlay {
+  position: fixed;
   display: flex;
   justify-content: center;
-
-}
-
-#main-canvas {
-  color: black;
-  width: 80%;
+  align-items: center;
   height: 100%;
-  margin-top: 2vh;
-  border: 1px solid black;
+  width: 100%;
+  background-color: black;
+  color: white;
+  z-index: 2;
+  animation-delay: 2s;
+  animation-duration: 1s;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+  animation-name: fadeOutBlue;
 }
 
-#wave-1,
-#wave-2 {
+@keyframes fadeOutBlue {
+  0% {
+    visibility: visible;
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    background-color: lightblue;
+    background-color: lightblue;
+    visibility: hidden;
+    display: none;
+  }
+}
+
+@keyframes backGroundBlue {
+  0% {
+  }
+  100% {
+  }
+}
+
+
+#wave-left-1,
+#wave-right-1 {
   position: absolute;
-  background-color: lightblue;
-  height: 200vh;
+  height: 100svh;
   z-index: 0;
-  width: 50vw;
+  width: 10vw;
 }
 
-#wave-1 {
-  left: -42vw;
+.wave-right {
+  right: 0vw;
   top: 0vh;
 }
 
-#wave-2 {
-  right: -42vw;
+.wave-left {
+  left: 0vw;
   bottom: 0vh;
 }
 
@@ -42,7 +71,47 @@ body {overflow: hidden;}
   z-index: 1;
   display: flex;
   justify-content: center;
-  font-size: 10vw;
-  background-color: blue;
-  color:burlywood;
+}
+
+.header h1 {
+  background-color: white;
+  font-size: 9vw;
+  border-radius: 2vw;
+  margin-top: 10px;
+  padding: 0px 1vw;
+  visibility: hidden;
+  animation: 1s cubic-bezier(0.98, 0.23, 0.67, 1.14) 6s 1 dropFromTop forwards;
+  transition: 100ms;
+  border: 1px solid rgba(77, 57, 255, 0.5);
+}
+
+@keyframes dropFromTop {
+  0% {
+    transform: translateY(-150%);
+    visibility: hidden;
+  }
+
+  80% {
+    box-shadow: none;
+  }
+
+  100% {
+    transform: translateY(0);
+    box-shadow: rgba(77, 57, 255, 0.4) 0px 5px, rgba(77, 57, 255, 0.3) 0px 10px, rgba(77, 57, 255, 0.2) 0px 15px, rgba(77, 57, 255, 0.1) 0px 20px, rgba(77, 57, 255, 0.05) 0px 25px;
+    visibility: visible;
+  }
+}
+
+.canvas-div {
+  display: flex;
+  justify-content: center;
+  box-shadow: 2px;
+}
+
+#main-canvas {
+  color: black;
+  width: 80%;
+  height: 100%;
+  margin-top: 24px;
+  border: 1px solid black;
 }
