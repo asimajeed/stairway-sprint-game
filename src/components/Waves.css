@@ -1,0 +1,63 @@
+.svg-wave-left,
+.svg-wave-right {
+  position: absolute;
+  height: 100vh;
+  aspect-ratio: 2 / 1;
+  overflow: visible;
+  --start :2s;
+  --inBetween: 0.75s;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.svg-wave-right {
+  left: 90vw;
+  top: 0vh;
+}
+
+.svg-wave-left {
+  right: 90vw;
+  bottom: 0vh;
+}
+
+#lv-0, #lv-1, #lv-2, #lv-3 {
+  transform: translateX(50vw)
+}
+
+#rv-0, #rv-1, #rv-2, #rv-3 {
+  transform: translateX(-50vw);
+}
+
+@media only screen and (max-width: 500px) {
+  .svg-wave-left,
+.svg-wave-right {
+  height: 100vh;
+  width: 160vw;
+}
+  #lv-0, #lv-1, #lv-2, #lv-3 {
+    transform: translateX(100vw)
+  }
+  
+  #rv-0, #rv-1, #rv-2, #rv-3 {
+    transform: translateX(-100vw);
+  }
+}
+
+#lv-3, #rv-3 {
+  animation: 0.8s ease var(--start) 1 waveLayer0 forwards
+}
+#lv-2, #rv-2 {
+  animation: 0.8s ease calc(var(--start) + 1 * var(--inBetween)) 1 waveLayer0 forwards
+}
+#lv-1, #rv-1 {
+  animation: 0.8s ease calc(var(--start) + 2 * var(--inBetween)) 1 waveLayer0 forwards
+}
+#lv-0, #rv-0 {
+  animation: 0.8s ease calc(var(--start) + 3 * var(--inBetween)) waveLayer0 forwards
+}
+
+@keyframes waveLayer0 {
+  100% {
+    transform: translateX(0);
+  }
+}

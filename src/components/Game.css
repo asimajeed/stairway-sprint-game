@@ -1,0 +1,30 @@
+.game-options-div {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.game-options-div button {
+  pointer-events: all;
+}
+
+.canvas-div {
+    z-index: 1;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0px;
+    left: 0px;
+    transition: box-shadow ease-out 1s;
+    pointer-events: none;
+}
+
+#main-canvas {
+  z-index: 0;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+}

@@ -1,42 +1,119 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+* {
+  padding: 0px;
+  margin: 0px;
+  font-family: 'kanit', sans-serif
+}
+
+html,
+body {
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+}
+
+body {
+  height: 100vh;
+  background-color:#FF4D39
+}
+
+#welcome-overlay {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
+  height: 100%;
+  width: 100%;
+  background-color: black;
+  color: white;
+  z-index: 2;
+  animation-name: fadeOutBlue;
+  animation-delay: 0s;
+  animation-duration: 1s;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+@keyframes fadeOutBlue {
+  0% {
+    visibility: visible;
+    opacity: 1;
   }
-  to {
-    transform: rotate(360deg);
-  }
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+  100% {
+    opacity: 0;
+    background-color: lightblue;
+    background-color: lightblue;
+    visibility: hidden;
+    display: none;
   }
 }
 
-.card {
-  padding: 2em;
+
+.svg-wave-left,
+.svg-wave-right {
+  position: absolute;
+  height: 100vh;
+  overflow: visible;
 }
 
-.read-the-docs {
-  color: #888;
+.svg-wave-right {
+  left: 90vw;
+  top: 0vh;
+}
+
+.svg-wave-left {
+  right: 90vw;
+  bottom: 0vh;
+}
+
+.header-div {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  margin: 0px 3rem;
+  pointer-events: none;
+}
+
+.header-span {
+  position: fixed;
+  font-weight: 400;
+  font-size: 1rem;
+  padding-left: 20px;
+}
+
+.header {
+  background-color: white;
+  border-radius: 1vw;
+  margin-top: 10px;
+  padding: 0px 1vw;
+  visibility: hidden;
+  animation: 1s cubic-bezier(0.98, 0.23, 0.67, 1.14) 10s 1 dropFromTop both;
+  transition: 100ms;
+  border-color: rgba(57, 235, 255, 0.5);
+  border-width: 2px;
+  border-style: groove;
+}
+
+.header h1 {
+  font-size: 8vw;
+}
+
+@keyframes dropFromTop {
+  0% {
+    transform: translateY(-150%);
+    visibility: hidden;
+    box-shadow: none;
+  }
+
+  80% {
+    box-shadow: none;
+  }
+
+  100% {
+    transform: translateY(0);
+    box-shadow: rgba(57, 235, 255, 0.4) 0px 5px, rgba(57, 235, 255, 0.3) 0px 10px, rgba(57, 235, 255, 0.2) 0px 15px, rgba(57, 235, 255, 0.1) 0px 20px, rgba(57, 235, 255, 0.05) 0px 25px;
+    visibility: visible;
+  }
 }
