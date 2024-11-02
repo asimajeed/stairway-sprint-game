@@ -248,12 +248,11 @@ export default function Game() {
     function lerp(start: number, end: number, t: number) {
       return start * (1 - t) + end * t;
     }
-    const skyboxTexture = new THREE.TextureLoader().load("/textures/BlueSkySkybox.png");
-
+    const skyboxTexture = new THREE.TextureLoader().load("textures/BlueSkySkybox.png");
     const skyboxGeometry = new THREE.SphereGeometry(20, 32, 32);
     const skyboxMaterial = new THREE.MeshBasicMaterial({
       map: skyboxTexture,
-      side: THREE.BackSide, // Render the inside of the sphere
+      side: THREE.BackSide,
     });
     const skybox = new THREE.Mesh(skyboxGeometry, skyboxMaterial);
     scene.add(skybox);
@@ -263,9 +262,10 @@ export default function Game() {
       camera.position.x = lerp(camera.position.x, ballPos.x + moveConstants.x, 0.05);
       camera.position.y = lerp(camera.position.y, ballPos.y + moveConstants.y, 0.1);
       camera.position.z = lerp(camera.position.z, ballPos.z + moveConstants.z, 0.1);
-      skybox.position.x = lerp(camera.position.x, ballPos.x, 0.2);
-      skybox.position.y = lerp(camera.position.y, ballPos.y, 0.2);
-      skybox.position.z = lerp(camera.position.z, ballPos.z, 0.2);
+      skybox.position.x = lerp(skybox.position.x, camera.position.x, 0.2);
+      skybox.position.y = lerp(skybox.position.y, camera.position.y, 0.2);
+      skybox.position.z = lerp(skybox.position.z, camera.position.z, 0.2);
+      skybox.setRotationFromQuaternion(ball.quaternion);
       DirectionalLight.position.set(ballPos.x + 5, ballPos.y + 15, ballPos.z + 20);
       DirectionalLight.target.position.x = ballPos.x;
     }
@@ -331,7 +331,7 @@ export default function Game() {
       >
         <button
           ref={resetButtonRef}
-          className="bg-[#0FCDE0] pointer-events-auto text-base rounded-[0.75em] p-[0.25em] transition ease-in duration-[100ms] hover:bg-[#39EBFF]"
+          className="bg-[#0FCDE0] pointer-events-auto text-base rounded-xl p-1 transition ease-in duration-100 hover:bg-[#39EBFF]"
         >
           Reset
         </button>

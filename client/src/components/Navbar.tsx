@@ -110,10 +110,7 @@ const LoginForm = ({ onLogin }: { onLogin: (userData: User) => void }) => {
         event.origin === import.meta.env.VITE_FRONTEND_URL &&
         event.data.status === "success"
       ) {
-        // Session cookie is already set in the browser
         console.log("Login successful");
-        // Redirect or update UI as needed
-        // window.location.reload(); // Optionally reload to update UI with login state
       }
     });
   }
