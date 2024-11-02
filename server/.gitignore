@@ -1,0 +1,5 @@
+src/creds.ts
+node_modules
+dist/test
+test
+.env
