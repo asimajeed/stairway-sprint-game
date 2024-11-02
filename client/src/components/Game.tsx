@@ -1,47 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import * as CANNON from "cannon-es";
-import "./Game.css";
-
-// const setSkyBox = (scene: THREE.Scene): THREE.Mesh => {
-//   const geometry = new THREE.BoxGeometry(800, 800, 800);
-//   const textureLoader = new THREE.TextureLoader();
-//   const materials = [
-//     new THREE.MeshBasicMaterial({
-//       map: textureLoader.load("./sky/1.bmp"),
-//       side: THREE.BackSide,
-//     }),
-//     new THREE.MeshBasicMaterial({
-//       map: textureLoader.load("./sky/2.bmp"),
-//       side: THREE.BackSide,
-//     }),
-//     new THREE.MeshBasicMaterial({
-//       map: textureLoader.load("./sky/3.bmp"),
-//       side: THREE.BackSide,
-//     }),
-//     new THREE.MeshBasicMaterial({
-//       map: textureLoader.load("./sky/4.bmp"),
-//       side: THREE.BackSide,
-//     }),
-//     new THREE.MeshBasicMaterial({
-//       map: textureLoader.load("./sky/5.bmp"),
-//       side: THREE.BackSide,
-//     }),
-//     new THREE.MeshBasicMaterial({
-//       map: textureLoader.load("./sky/6.bmp"),
-//       side: THREE.BackSide,
-//     }),
-//   ];
-//   const cube = new THREE.Mesh(geometry, materials);
-//   scene.add(cube);
-//   return cube;
-// };
 
 export default function Game() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasDivRef = useRef<HTMLDivElement>(null);
   const resetButtonRef = useRef<HTMLButtonElement>(null);
-  const [plscr, setplscr] = useState<number>(0);
+  const [playerScore, setPlayerScore] = useState<number>(0);
   useEffect(() => {
     if (!canvasRef.current || !canvasDivRef.current || !resetButtonRef.current) return;
 
@@ -88,15 +53,6 @@ export default function Game() {
     renderer.shadowMap.enabled = true;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-
-    // Adding Plane
-    const plane = new THREE.Mesh(
-      new THREE.PlaneGeometry(100, 100),
-      new THREE.MeshLambertMaterial({ color: 0x6fa9ff, toneMapped: false })
-    );
-    plane.position.set(0, 0, -0.5);
-    plane.receiveShadow = true;
-    scene.add(plane);
 
     // Adding Lights
     const DirectionalLight = new THREE.DirectionalLight(0xffffff, 3.5);
@@ -208,16 +164,16 @@ export default function Game() {
     let ballTouching = false;
     const startPointerPos = new THREE.Vector2();
     const endPointerPos = new THREE.Vector2();
-    let mouseDown = false;
+    // let mouseDown = false;
 
     // Event listeners for mouse interaction
     renderer.domElement.addEventListener("mousedown", (event) => {
-      mouseDown = true;
+      // mouseDown = true;
       startPointerPos.set(event.clientX, event.clientY);
     });
 
     renderer.domElement.addEventListener("touchstart", (event) => {
-      mouseDown = true;
+      // mouseDown = true;
       startPointerPos.set(event.touches[0].clientX, event.touches[0].clientY);
     });
 
@@ -233,7 +189,7 @@ export default function Game() {
         event = event as TouchEvent;
         if (event.touches.length > 1) return;
       }
-      mouseDown = false;
+      // mouseDown = false;
 
       if (isHitAllowed) {
         const direction = new THREE.Vector2().subVectors(startPointerPos, endPointerPos);
@@ -266,7 +222,8 @@ export default function Game() {
           }
         });
       }
-      isHitAllowed = ballBody.velocity.almostEquals(new CANNON.Vec3(0, 0, 0), 1e-3) && ballTouching;
+      isHitAllowed =
+        ballBody.velocity.almostEquals(new CANNON.Vec3(0, 0, 0), 1e-3) && ballTouching;
       if (isHitAllowed) {
         containerDivElement.style.boxShadow = "inset 0px 0px 3vw 0.5vw #39EBFF";
       } else {
@@ -276,14 +233,14 @@ export default function Game() {
 
     function updateStairway() {
       if (stairs[0].mesh.position.x + 10 < ball.position.x || isHitAllowed) {
-        if (stairs[0].mesh.position.x + 3 < ball.position.x) {
+        if (stairs[0].mesh.position.x + 2 < ball.position.x) {
           const removedStair = stairs.shift();
           if (removedStair) {
             world.removeBody(removedStair.body);
             scene.remove(removedStair.mesh);
           }
           createStair(player.score++ + 15);
-          isHitAllowed && setplscr(player.score);
+          isHitAllowed && setPlayerScore(player.score);
         }
       }
     }
@@ -291,16 +248,28 @@ export default function Game() {
     function lerp(start: number, end: number, t: number) {
       return start * (1 - t) + end * t;
     }
+    const skyboxTexture = new THREE.TextureLoader().load("/textures/BlueSkySkybox.png");
+
+    const skyboxGeometry = new THREE.SphereGeometry(20, 32, 32);
+    const skyboxMaterial = new THREE.MeshBasicMaterial({
+      map: skyboxTexture,
+      side: THREE.BackSide, // Render the inside of the sphere
+    });
+    const skybox = new THREE.Mesh(skyboxGeometry, skyboxMaterial);
+    scene.add(skybox);
+
     function moveAttachedObjects() {
       const ballPos = ball.position;
       camera.position.x = lerp(camera.position.x, ballPos.x + moveConstants.x, 0.05);
       camera.position.y = lerp(camera.position.y, ballPos.y + moveConstants.y, 0.1);
       camera.position.z = lerp(camera.position.z, ballPos.z + moveConstants.z, 0.1);
-      plane.position.x = ball.position.x;
-      plane.position.y = ball.position.y;
+      skybox.position.x = lerp(camera.position.x, ballPos.x, 0.2);
+      skybox.position.y = lerp(camera.position.y, ballPos.y, 0.2);
+      skybox.position.z = lerp(camera.position.z, ballPos.z, 0.2);
       DirectionalLight.position.set(ballPos.x + 5, ballPos.y + 15, ballPos.z + 20);
       DirectionalLight.target.position.x = ballPos.x;
     }
+
     const animate = (time: number) => {
       requestAnimationFrame(animate);
 
@@ -335,7 +304,7 @@ export default function Game() {
       ballBody.velocity.setZero();
       ballBody.angularVelocity.setZero();
       player.score = 0;
-      setplscr(player.score);
+      setPlayerScore(player.score);
     });
 
     window.addEventListener("resize", () => {
@@ -356,12 +325,24 @@ export default function Game() {
 
   return (
     <>
-      <div className="game-options-div">
-        <button ref={resetButtonRef}>Reset</button>
-        <p>{plscr}</p>
+      <div
+        className="mt-24 relative flex justify-center items-center z-[1] pointer-events-none text-2xl gap-[2vw]"
+        style={{ textShadow: "0px 0px 0.1em white, 0px 0px 0.5em white" }}
+      >
+        <button
+          ref={resetButtonRef}
+          className="bg-[#0FCDE0] pointer-events-auto text-base rounded-[0.75em] p-[0.25em] transition ease-in duration-[100ms] hover:bg-[#39EBFF]"
+        >
+          Reset
+        </button>
+        <p>{playerScore}</p>
       </div>
-      <div className="canvas-div" ref={canvasDivRef} />
-      <canvas ref={canvasRef} id="main-canvas"></canvas>
+      <div
+        className="fixed w-full h-full top-0 left-0 z-[1] pointer-events-none"
+        ref={canvasDivRef}
+        style={{ transition: "box-shadow ease-out 400ms" }}
+      />
+      <canvas ref={canvasRef} id="main-canvas" className="z-[-1] fixed top-0 left-0"></canvas>
     </>
   );
 }
