@@ -78,8 +78,20 @@ export default function Game() {
     const world = new CANNON.World();
     world.gravity.set(0, -9.81, 0);
 
+    const myTextureLoader = new THREE.TextureLoader();
+
+    // Sky box setup
+    const skyboxTexture = myTextureLoader.load("textures/BlueSkySkybox.png");
+    const skyboxGeometry = new THREE.SphereGeometry(20, 32, 32);
+    const skyboxMaterial = new THREE.MeshBasicMaterial({
+      map: skyboxTexture,
+      side: THREE.BackSide,
+    });
+    const skybox = new THREE.Mesh(skyboxGeometry, skyboxMaterial);
+    scene.add(skybox);
+
     // Ball setup
-    const ballTexture = new THREE.TextureLoader().load("textures/ball.png");
+    const ballTexture = myTextureLoader.load("textures/ball.png");
     ballTexture.colorSpace = THREE.SRGBColorSpace;
     const ball = new THREE.Mesh(
       new THREE.SphereGeometry(0.5, 20, 20),
@@ -114,7 +126,7 @@ export default function Game() {
 
     const stairs: { mesh: THREE.Mesh; body: CANNON.Body }[] = [];
     const stairMaterial = new CANNON.Material();
-    const stairDirtTexture = new THREE.TextureLoader().load("textures/dirt.jpg");
+    const stairDirtTexture = myTextureLoader.load("textures/dirt.jpg");
     stairDirtTexture.colorSpace = THREE.SRGBColorSpace;
     const stairMeshMaterial = new THREE.MeshStandardMaterial({
       map: stairDirtTexture,
@@ -248,14 +260,6 @@ export default function Game() {
     function lerp(start: number, end: number, t: number) {
       return start * (1 - t) + end * t;
     }
-    const skyboxTexture = new THREE.TextureLoader().load("textures/BlueSkySkybox.png");
-    const skyboxGeometry = new THREE.SphereGeometry(20, 32, 32);
-    const skyboxMaterial = new THREE.MeshBasicMaterial({
-      map: skyboxTexture,
-      side: THREE.BackSide,
-    });
-    const skybox = new THREE.Mesh(skyboxGeometry, skyboxMaterial);
-    scene.add(skybox);
 
     function moveAttachedObjects() {
       const ballPos = ball.position;
