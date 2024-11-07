@@ -70,10 +70,10 @@ export default function Navbar() {
         ) : (
           <Dialog>
             <DialogTrigger className="text-black">Login</DialogTrigger>
-            <DialogContent>
+            <DialogContent className="w-full" >
               <DialogTitle>Login/Register</DialogTitle>
               <DialogDescription>
-                <Tabs defaultValue="login" className="w-[400px]">
+                <Tabs defaultValue="login">
                   <TabsList>
                     <TabsTrigger value="login">Login</TabsTrigger>
                     <TabsTrigger value="register">Register</TabsTrigger>

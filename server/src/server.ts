@@ -17,6 +17,7 @@ app.use(
   })
 );
 app.use(express.json());
+app.enable("trust proxy")
 
 app.use(
   session({
